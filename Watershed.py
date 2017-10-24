@@ -77,7 +77,7 @@ class Watershed(object):
             for q in neighbours[p[0], p[1]]:
                lab_q = labels[q[0], q[1]]
                if lab_q > 0:
-                  if lab_p == self.INQE or (lab_p >= self.WSHD and flag):
+                  if lab_p == self.INQE or (lab_p == self.WSHD and flag):
                      labels[p[0], p[1]] = lab_q
                   elif lab_p > 0 and lab_p != lab_q:
                      labels[p[0], p[1]] = self.WSHD
