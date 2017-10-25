@@ -73,7 +73,7 @@ class Watershed(object):
             p = fifo.popleft()
             # Label p by inspecting neighbours.
             for q in neighbours[p[0], p[1]]:
-               # Don't set lab_p in the outer loop because it mey change.
+               # Don't set lab_p in the outer loop because it may change.
                lab_p = labels[p[0], p[1]]
                lab_q = labels[q[0], q[1]]
                if lab_q > 0:
