@@ -1,4 +1,5 @@
 import numpy as np
+from collections import deque
 
 # Implementation of:
 # Pierre Soille, Luc M. Vincent, "Determining watersheds in digital pictures via
@@ -24,7 +25,7 @@ class Watershed(object):
    def apply(self, image):
       current_label = 0
       flag = False
-      fifo = []
+      fifo = deque()
 
       height, width = image.shape
       total = height * width
@@ -71,7 +72,7 @@ class Watershed(object):
 
          # Extend basins.
          while fifo:
-            p = fifo.pop(0)
+            p = fifo.popleft()
             lab_p = labels[p[0], p[1]]
             # Label p by inspecting neighbours.
             for q in neighbours[p[0], p[1]]:
@@ -98,7 +99,7 @@ class Watershed(object):
                fifo.append(p)
                labels[p[0], p[1]] = current_label
                while fifo:
-                  q = fifo.pop(0)
+                  q = fifo.popleft()
                   for r in neighbours[q[0], q[1]]:
                      if labels[r[0], r[1]] == self.MASK:
                         fifo.append(r)
