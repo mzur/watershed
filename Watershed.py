@@ -36,7 +36,12 @@ class Watershed(object):
       pixels = np.mgrid[0:height, 0:width].reshape(2, -1).T
       # Coordinates of neighbour pixels for each pixel.
       neighbours = np.array([self._get_neighbors(height, width, p) for p in pixels])
-      neighbours = neighbours.reshape(height, width)
+      if len(neighbours.shape) == 3:
+         # Case where all pixels have the same number of neighbours.
+         neighbours = neighbours.reshape(height, width, -1, 2)
+      else:
+         # Case where pixels may have a different number of pixels.
+         neighbours = neighbours.reshape(height, width)
 
       indices = np.argsort(reshaped_image)
       sorted_image = reshaped_image[indices]
