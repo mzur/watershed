@@ -71,9 +71,10 @@ class Watershed(object):
          # Extend basins.
          while fifo:
             p = fifo.popleft()
-            lab_p = labels[p[0], p[1]]
             # Label p by inspecting neighbours.
             for q in neighbours[p[0], p[1]]:
+               # Don't set lab_p in the outer loop because it mey change.
+               lab_p = labels[p[0], p[1]]
                lab_q = labels[q[0], q[1]]
                if lab_q > 0:
                   if lab_p == self.INQE or (lab_p == self.WSHD and flag):
