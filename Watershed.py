@@ -42,13 +42,12 @@ class Watershed(object):
       sorted_image = reshaped_image[indices]
       sorted_pixels = pixels[indices]
 
-      image_min = sorted_image[0]
-      image_max = sorted_image[-1]
-
-      levels = np.linspace(image_min, image_max, self.levels)
+      # self.levels evenly spaced steps from minimum to maximum.
+      levels = np.linspace(sorted_image[0], sorted_image[-1], self.levels)
       level_indices = []
       current_level = 0
 
+      # Get the indices that deleimit pixels with different values.
       for i in xrange(total):
          if sorted_image[i] > levels[current_level]:
             # Skip levels until the next highest one is reached.
@@ -64,7 +63,6 @@ class Watershed(object):
             # Initialize queue with neighbours of existing basins at the current level.
             for q in neighbours[p[0], p[1]]:
                # p == q is ignored here because labels[p] < WSHD
-               # if labels[q[0], q[1]] > 0 or labels[q[0], q[1]] == WSHD:
                if labels[q[0], q[1]] >= self.WSHD:
                   labels[p[0], p[1]] = self.INQE
                   fifo.append(p)
@@ -93,8 +91,8 @@ class Watershed(object):
 
          # Detect and process new minima at the current level.
          for p in sorted_pixels[start_index:stop_index]:
+            # p is inside a new minimum. Create a new label.
             if labels[p[0], p[1]] == self.MASK:
-               # p is inside a new minimum. Create a new label.
                current_label += 1
                fifo.append(p)
                labels[p[0], p[1]] = current_label
